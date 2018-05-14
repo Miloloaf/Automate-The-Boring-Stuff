@@ -1,0 +1,23 @@
+def collatz(integer):
+
+    print (integer)
+    if integer == 0:
+        return 0
+    elif integer == 1:
+        return 1
+    elif integer % 2 == 0:
+        integer = integer//2
+        return collatz(integer)
+    else:
+        integer = ((integer*3) +1)
+        return collatz(integer)
+
+while True:
+    try:
+        foo = int(input("Enter a number: \n"))
+        break
+
+    except ValueError:
+        print ("Input must be an integer")
+
+collatz(foo)
