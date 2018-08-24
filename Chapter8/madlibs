@@ -1,0 +1,34 @@
+#! python3
+# madlibs.py - Reads a text file and lets the user add ther own text anywhere in the word 
+# where ADJECTIVE, NOUN, ADVERB, or VERB appear in the text file.
+
+import re
+
+# Read text file
+mytxtfilepath = r".\sadpanda.txt"
+mytxtfile = open(mytxtfilepath, 'r')
+txt = mytxtfile.read()
+mytxtfile.close()
+txt2 = str(txt)
+txts = txt.split(" ")
+
+# Find words
+wordlist = ['ADJECTIVE', 'NOUN', 'ADVERB', 'VERB']
+re_all_match = re.compile(r'ADJECTIVE|NOUN|ADVERB|VERB')
+
+for word in txts:
+    all_matches = re_all_match.search(word)
+    if all_matches is not None:
+        replace_word = all_matches.group()
+        
+        # User input for words
+        if replace_word[0].upper() == "A":
+            user_txt = input("Enter an %s: \n" % replace_word)
+            txt = re.sub(replace_word, user_txt, txt, 1)
+        else:
+            user_txt = input("Enter a %s: \n" % replace_word)
+            txt = re.sub(replace_word, user_txt, txt, 1)
+    
+print(txt)
+
+# TODO: Create new text file
