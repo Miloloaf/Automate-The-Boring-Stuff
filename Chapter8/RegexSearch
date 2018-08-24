@@ -1,0 +1,14 @@
+# Searches a directory for user given keyworkd and prints lines that contain the keyword.
+
+import re, os
+
+dir_path = r"C:\Users\ml044041\OneDrive - CH2M\Python"
+items_in_dir = os.listdir(dir_path)
+
+for item in items_in_dir:
+    current_item = os.path.join(dir_path, item)
+    
+    if item.endswith('.txt'):
+        with open(current_item) as file:
+            contents = file.read()
+            print(contents)
