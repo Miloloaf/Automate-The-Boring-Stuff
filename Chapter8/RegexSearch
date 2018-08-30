@@ -1,9 +1,15 @@
 # Searches a directory for user given keyworkd and prints lines that contain the keyword.
 
+# TODO Features:
+# Read PDFs
+# Use Regex as a search query
+
 import re, os
 
 dir_path = r"C:\Users\ml044041\OneDrive - CH2M\Python"
 items_in_dir = os.listdir(dir_path)
+
+search_query= str(input("Please enter a search query (Case Sensitive): "))
 
 for item in items_in_dir:
     current_item = os.path.join(dir_path, item)
@@ -11,4 +17,8 @@ for item in items_in_dir:
     if item.endswith('.txt'):
         with open(current_item) as file:
             contents = file.read()
-            print(contents)
+            cnt_split = [sentence + "." for sentence in contents.split(".")] #Splits txt file into sentences
+            for i in range(len(cnt_split)):
+                if search_query in cnt_split[i]:
+                    print(cnt_split[i])
+            # print (cnt_split)
