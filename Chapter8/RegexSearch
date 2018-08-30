@@ -6,7 +6,7 @@
 
 import re, os
 
-dir_path = r"C:\Users\ml044041\OneDrive - CH2M\Python"
+dir_path = r"C:\Directory"
 items_in_dir = os.listdir(dir_path)
 
 search_query= str(input("Please enter a search query (Case Sensitive): "))
