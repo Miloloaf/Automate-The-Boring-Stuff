@@ -1,0 +1,31 @@
+#! python3
+#! Adds specified prefix to start of all file names in the directory
+
+import os, shutil
+
+os.chdir(r"Directory") #Insert new directory here
+
+items_list = os.listdir(os.getcwd())
+
+appendage = str(input("Please enter a prefix to files: \n"))
+remove = str(input("Would you like to remove the original files (y/n)?: "))
+
+for item in items_list:
+    new_name = appendage + item
+    print (new_name)
+
+    orig_file = os.path.join(os.getcwd(),item)
+
+    new_file = os.path.join(os.getcwd(),new_name)
+
+    if remove == "y":
+        shutil.move(orig_file, new_file)
+
+    elif remove == "n":
+        shutil.copy(orig_file,new_file)
+#
+    else:
+        print("You have not inputted a valid paramiter for remove, please try again")
+        break
+
+# os.path.isfile()
