@@ -1,0 +1,102 @@
+#! python3
+
+# Blankrowinserter - Inserts number of blank rows at specified row location
+
+import openpyxl
+
+def inserter(startRow, numberofBlanks, wb_name):
+    wb = openpyxl.load_workbook(wb_name)
+    sheet = wb.get_active_sheet()
+
+    maxcol = sheet.max_column
+    #print(maxcol)
+
+    block_one_end = sheet.cell(row=(startRow-1), column=maxcol).coordinate
+    #print(block_one_end)
+    block_two_start = sheet.cell(row=startRow, column=1).coordinate
+    block_two_end = sheet.cell(row=maxcol, column=maxcol).coordinate
+
+    block_two_new_start = sheet.cell(row=startRow+numberofBlanks, column=1).coordinate
+    block_two_new_end = sheet.cell(row=maxcol + numberofBlanks, column=maxcol).coordinate
+
+    empty_row_start = sheet.cell(row=(startRow), column = 1).coordinate
+    empty_row_end = sheet.cell(row=(startRow+(numberofBlanks-1)), column=maxcol).coordinate
+
+
+    block_one = sheet["A1":block_one_end]
+    block_two = sheet[block_two_start:block_two_end]
+    empty_block = sheet[empty_row_start:empty_row_end]
+    #block_two_new = sheet[block_two_new_start:block_two_new_end]
+
+    #print(block_one)
+    #print(block_two)
+
+    block_one_values = assign_values(sheet, block_one)
+    block_two_values = assign_values(sheet, block_two)
+    empty_rows = assign_values(sheet, empty_block)
+    # block_two_new_values = assign_values(sheet, block_two_new)
+    #
+    # new_second_block = reassign_dicts(block_two_new_values, block_two_values)
+    # print(new_second_block)
+
+    block_two_new_values = insert_below(sheet, block_two_values, numberofBlanks)
+
+    #print(block_two_new_values)
+
+
+    create_sheet(sheet, block_two_new_values)
+    create_blanks(empty_rows)
+    create_sheet(sheet, empty_rows)
+
+    wb.save("multiplication_copy.xlsx")
+
+
+
+
+def assign_values(sheet, tuple):
+    temp_dict = {}
+    for row in tuple:
+        for cell in row:
+            temp_dict[cell.coordinate] = cell.value
+            #print((cell.coordinate),(cell.value))
+    return(temp_dict)
+
+def insert_below(sheet, dict, offset):
+    new_dict = {}
+    sheet = sheet
+    for key, value in dict.items():
+        cellv = sheet[key]
+        new_cell = sheet[cellv.column+str(cellv.row+offset)].coordinate
+        new_dict[new_cell] = value
+
+    return(new_dict)
+
+def create_sheet(sheet, dict_of_cells):
+    for key, value in dict_of_cells.items():
+        sheet[key] = value
+
+def create_blanks(dictionary):
+    for key in dictionary.keys():
+        dictionary[key] = None
+
+#def empty_rows
+
+# def reassign_dicts(dict1, dict2):
+#     """
+#     Takes key in dict1 and assigns values from dict2
+#
+#     :param dict1:
+#     :param dict2:
+#     :return:
+#     """
+#     new_dict = {}
+#     for key1, value1 in dict1.items():
+#         for key2, value2 in dict2.items():
+#             new_dict[key2] = value1
+#             print("dict1", key1, value1)
+#             print("dict2", key2,value2)
+#             #break
+#     return new_dict
+
+
+inserter(3,1,"Multiplication.xlsx")
