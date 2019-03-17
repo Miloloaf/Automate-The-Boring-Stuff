@@ -1,0 +1,33 @@
+#! python3
+
+# Takes an array of cells in excel and inverts them so row = column
+
+import openpyxl
+from openpyxl.utils.cell import column_index_from_string, coordinate_from_string
+from openpyxl.utils import get_column_letter
+
+file = "Produce_v2.xlsx"
+
+wb = openpyxl.load_workbook(file)
+wb2 = openpyxl.Workbook()
+
+sheet = wb.get_active_sheet()
+sheet2 = wb2.get_active_sheet()
+
+start_cell = "A1"
+end_cell= sheet.cell(row = sheet.max_row, column = sheet.max_column).coordinate
+
+array_block = sheet[start_cell:end_cell]
+
+# Takes cell array and flips it
+for row in array_block:
+    for cell in row:
+        column, row = coordinate_from_string(cell.coordinate) # returns the original column and row for each cell
+
+        new_column = get_column_letter(row)
+        new_row = column_index_from_string(column)
+        new_coord = str(new_column)+str(new_row) # new cell that hte existing value should move to
+        sheet2[new_coord] = cell.value # writes cell value in new workbook
+
+#print(sheet2["B1"].value)
+wb2.save("produce_test_flip.xlsx")
